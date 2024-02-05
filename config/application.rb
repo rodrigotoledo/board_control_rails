@@ -18,6 +18,9 @@ require "action_cable/engine"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+# Load .env.local in test
+require 'dotenv'
+Dotenv.load
 module ControlTasks
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
