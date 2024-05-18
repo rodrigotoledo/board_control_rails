@@ -5,8 +5,7 @@ ruby "3.2.1"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.1.3"
 
-# Use sqlite3 as the database for Active Record
-gem "sqlite3", "~> 1.4"
+gem 'pg'
 
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
@@ -15,7 +14,7 @@ gem "puma", ">= 5.0"
 # gem "jbuilder"
 
 # Use Redis adapter to run Action Cable in production
-# gem "redis", ">= 4.0.1"
+gem "redis", ">= 4.0.1"
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
@@ -42,15 +41,33 @@ group :development, :test do
   gem "faker", "~> 3.2"
   gem "factory_bot_rails"
   gem 'guard-rspec', '~> 4.7'
-  gem "byebug", "~> 11.1"
-  gem 'dotenv'
-  gem 'simplecov'
-  gem 'shoulda-matchers', require: false
+  gem 'dotenv-rails'
+  gem 'simplecov', require: false
+  gem 'active_record_query_trace'
+  gem 'byebug', platform: :mri
+  gem 'letter_opener'
+  gem 'rspec_junit_formatter'
+  gem 'rubocop', require: false
+  gem 'rubocop-performance', require: false
+  gem 'rubocop-rails', require: false
+  gem 'rubocop-rspec', require: false
+  gem 'rails-controller-testing'
+  gem 'bundler-audit'
+  gem 'bullet'
 end
 
 group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+  gem 'brakeman'
+  gem 'rufo'
+  gem 'annotate'
+end
+
+group :test do
+  gem 'database_cleaner-active_record'
+  gem 'rspec-json_expectations'
+  gem 'shoulda-matchers'
 end
 
 gem "rack-cors", "~> 2.0"

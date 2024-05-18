@@ -1,17 +1,13 @@
 require 'rails_helper'
 
-RSpec.describe 'TasksController', type: :request do
+RSpec.describe 'Api::TasksController', type: :request do
   let!(:user) { create(:user) }
 
   describe 'Tasks Operations' do
-    before do
-      @result = sign_in(user)
-    end
-
     describe 'GET /tasks' do
       it 'returns a list of tasks in ascending order of creation' do
         create_list(:task, 5)
-        get tasks_path, headers: { 'Authorization' => "Bearer #{@result['token']}" }
+        get api_tasks_path, headers: generate_jwt_token(user)
         tasks = JSON.parse(response.body)
 
         expect(response).to have_http_status(200)
@@ -23,7 +19,7 @@ RSpec.describe 'TasksController', type: :request do
       it 'marks a task as completed' do
         task = create(:task)
 
-        patch task_path(task.id), headers: { 'Authorization' => "Bearer #{@result['token']}" }
+        patch api_task_path(task.id), headers: generate_jwt_token(user)
         task.reload
 
         expect(response).to have_http_status(200)

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'RegistrationsController', type: :request do
   describe 'POST #create' do
-    let(:valid_params) do
+    let!(:valid_params) do
       {
         user: attributes_for(:user)
       }
@@ -11,12 +11,12 @@ RSpec.describe 'RegistrationsController', type: :request do
     context 'with valid parameters' do
       it 'creates a new user' do
         expect do
-          post sign_up_path, params: valid_params
+          post api_sign_up_path, params: valid_params
         end.to change(User, :count).by(1)
       end
 
       it 'returns a JSON response with the new user' do
-        post sign_up_path, params: valid_params
+        post api_sign_up_path, params: valid_params
         expect(response).to have_http_status(:created)
         json_response = JSON.parse(response.body)
         expect(json_response).to have_key('user')
@@ -25,7 +25,7 @@ RSpec.describe 'RegistrationsController', type: :request do
     end
 
     context 'with invalid parameters' do
-      let(:invalid_params) do
+      let!(:invalid_params) do
         {
           user: attributes_for(:user, email: 'invalid-email')
         }
@@ -33,12 +33,12 @@ RSpec.describe 'RegistrationsController', type: :request do
 
       it 'does not create a new user' do
         expect do
-          post sign_up_path, params: invalid_params
+          post api_sign_up_path, params: invalid_params
         end.not_to change(User, :count)
       end
 
       it 'returns a JSON response with errors' do
-        post sign_up_path, params: invalid_params
+        post api_sign_up_path, params: invalid_params
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end

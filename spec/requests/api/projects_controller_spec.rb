@@ -3,14 +3,11 @@ require 'rails_helper'
 RSpec.describe 'ProjectsController', type: :request do
   let!(:user) { create(:user) }
   describe 'Projects Operations' do
-    before do
-      @result = sign_in(user)
-    end
     describe 'GET /projects' do
       it 'returns a list of projects in ascending order of creation' do
         create_list(:project, 5)
 
-        get projects_path, headers: { 'Authorization' => "Bearer #{@result['token']}" }
+        get api_projects_path, headers: generate_jwt_token(user)
         projects = JSON.parse(response.body)
 
         expect(response).to have_http_status(200)
@@ -22,7 +19,7 @@ RSpec.describe 'ProjectsController', type: :request do
       it 'marks a project as completed' do
         project = create(:project)
 
-        patch project_path(project.id), headers: { 'Authorization' => "Bearer #{@result['token']}" }
+        patch api_project_path(project.id), headers: generate_jwt_token(user)
         project.reload
 
         expect(response).to have_http_status(200)
