@@ -28,7 +28,6 @@ config/master.key
 # TODO Comment out these rules if environment variables can be committed
 .env
 .env*.local
-.env*
 
 ## Environment normalization:
 /.bundle
@@ -70,3 +69,5 @@ yarn-debug.log*
 /public/uploads
 /app/assets/builds/*
 !/app/assets/builds/.keep
+.ruby-gemset
+.rvmrc
