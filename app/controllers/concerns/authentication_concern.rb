@@ -13,11 +13,8 @@ module AuthenticationConcern
       begin
         token = auth_header.split(' ').last
         JWT.decode(token, ENV.fetch("JWT_KEY"), true, algorithm: 'HS256')
-      rescue
-        #:nocov:
-        # trying to cov
+      rescue 
         head :unauthorized
-        #:nocov:
       end
     end
   end
@@ -37,7 +34,7 @@ module AuthenticationConcern
       user = User.find_by(id: user_id)
       Current.user ||= user
     rescue
-      nil
+      head :unauthorized
     end
   end
 
