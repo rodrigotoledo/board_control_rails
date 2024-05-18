@@ -58,14 +58,14 @@ bundle exec guard
 To features use the prefix `feature`. For example
 
 ```bash
-git checkout development
+git checkout develop
 git checkout -b feature/crud_user
 ```
 
 For fixes, use the prefix `fix`. For example
 
 ```bash
-git checkout development
+git checkout develop
 git checkout -b fix/fix_in_crud_user
 ```
 
@@ -77,7 +77,7 @@ aicommits --generate 5
 
 And choice the best option to commit.
 
-Finally, you can merge the branch with `development` and `main` branches.
+Finally, you can merge the branch with `develop` and `main` branches.
 
 ### Contact
 
