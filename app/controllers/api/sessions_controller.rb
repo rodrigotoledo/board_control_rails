@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 module Api
   class SessionsController < ApplicationController
     def create
       user = User.find_by(email: params[:email])
       puts params.inspect
-      if user && user.authenticate(params[:password])
+      if user&.authenticate(params[:password])
         token = login(user)
         render json: { user: user.attributes.except('password_digest'), token: token }, status: :created
       else
