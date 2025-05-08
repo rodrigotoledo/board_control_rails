@@ -1,0 +1,36 @@
+name: Application workflow
+
+on:
+  push:
+    branches:
+    - main
+
+jobs:
+  rspec:
+    name: RSpec
+    runs-on: ubuntu-22.04
+    env:
+      APPLICATION_NAME: board_control
+      JWT_KEY: so_difficult_123
+      RAILS_ENV: test
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.3.4'
+        bundler-cache: true
+
+    - name: Install system dependencies
+      run: sudo apt-get install -y libsqlite3-dev
+
+    - name: Set up database
+      run: |
+        bundle exec rails db:create
+        bundle exec rails db:schema:load
+
+    - name: Run tests
+      run: bundle exec rspec

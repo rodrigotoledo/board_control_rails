@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Board Control" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="min-h-screen bg-gray-50 flex flex-col">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div class="flex justify-between items-center">
+          <h1 class="text-2xl font-bold text-gray-900">
+            <%= link_to "Board Control", root_path, class: "hover:text-blue-600 transition-colors" %>
+          </h1>
+          <nav class="flex space-x-4">
+            <% if authenticated? %>
+              <%= link_to "Tasks", new_registration_path %>
+              <%= link_to "Projects", projects_path %>
+              <%=turbo_stream_from "total_of_projects" %>
+              <%=turbo_frame_tag "total_of_projects" do %>
+                <%=render partial: 'projects/total_of_projects' %>
+              <% end %>
+              <%= button_to "Sign Out", session_path, method: :delete, class: 'cursor-pointer'  %>
+            <% else %>
+              <%= link_to "Sign Up", new_registration_path %>
+              <%= link_to "Sign In", new_session_path %>
+              <%= link_to "Forgot password?", new_password_path %>
+            <% end %>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <%= render partial: 'layouts/flash_messages' %>
+
+      <%= yield %>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t mt-8 py-6">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-500 text-sm">
+        <p>© <%= Time.current.year %> Board Control. All rights reserved.</p>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,47 @@
+version: "3.8"
+networks:
+  backend:
+  frontend:
+services:
+  db_postgresql:
+    container_name: postgresql_container
+    image: postgres:14.2-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.development
+    tty: true
+    volumes:
+      - .:/app
+      - bundle:/usr/local/bundle
+    working_dir: /app
+    environment:
+      APPLICATION_NAME: board_control
+      DB_HOST: db_postgresql
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      BUNDLE_GEMFILE: /app/Gemfile
+      PORT: 3000
+      JWT_KEY: supersecret
+    command: bin/docker-dev-start-web.sh
+    networks:
+      - backend
+      - frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db_postgresql
+volumes:
+  bundle:
+  postgres_data:
