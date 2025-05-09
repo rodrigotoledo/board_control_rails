@@ -146,6 +146,15 @@ rails db:drop db:create db:migrate db:seed
 rake db:schema:dump
 ```
 
+## Production
+
+Using AWS this project needs .pem and access, after this build the project with\
+
+```bash
+docker build -t rtoledo/board_control_kamal2 .
+docker push rtoledo/board_control_kamal2
+```
+
 ## Testing
 
 For Tests For Example Run `Guard`:

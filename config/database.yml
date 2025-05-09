@@ -36,7 +36,7 @@ production:
     encoding: unicode
     timeout: 5000
     pool: <%= ENV.fetch("RAILS_MAX_THREADS", 5) %>
-    url: <%= ENV.fetch("DATABASE_URL") %>
+    url: <%= ENV.fetch("DATABASE_URL", 'url_production_database') %>
   cache:
     <<: *sqlite
     database: production_cache.sqlite3

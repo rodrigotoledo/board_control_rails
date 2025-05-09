@@ -1,4 +1,4 @@
-ARG RUBY_VERSION=3.4.2
+ARG RUBY_VERSION=3.3.4
 FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim as base
 
 # Rails app lives here
@@ -19,7 +19,7 @@ ENV RAILS_ENV="production" \
 FROM base as build
 
 RUN apt-get update -qq && \
-    && apt-get install --no-install-recommends -y \
+    apt-get install --no-install-recommends -y \
     nodejs \
     libyaml-dev \
     libgmp-dev \
@@ -33,21 +33,25 @@ RUN apt-get update -qq && \
     postgresql-client \
     imagemagick \
     libmagickwand-dev && \
-    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+    rm -rf /var/lib/apt/lists/* /var/cache/apt/archives
 
-# Install application gems
+    # Copia os arquivos necessários para instalar as gems
 COPY Gemfile Gemfile.lock ./
-RUN bundle install && \
-    rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
-    bundle exec bootsnap precompile --gemfile
 
-# Copy application code
+# Configura o bundler para modo produção
+RUN bundle config set deployment 'true' && \
+    bundle config set without 'development test' && \
+    bundle install --jobs=$(nproc) --retry=3 && \
+    rm -rf /usr/local/bundle/cache/*.gem && \
+    find /usr/local/bundle/gems/ -name "*.c" -delete && \
+    find /usr/local/bundle/gems/ -name "*.o" -delete
+
+# Copia o restante da aplicação
 COPY . .
 
-# Precompile bootsnap code for faster boot times
-RUN bundle exec bootsnap precompile app/ lib/
-
-RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
+# Precompila os bootsnap e os assets
+RUN bundle exec bootsnap precompile --gemfile && \
+    SECRET_KEY_BASE=dummy RAILS_ENV=production bundle exec rails assets:precompile
 
 # Final stage for app image
 FROM base
