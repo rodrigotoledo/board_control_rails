@@ -10,8 +10,7 @@ RUN apt-get update -qq && \
     curl \
     libjemalloc2 \
     libvips \
-    sqlite3 \
-    && rm -rf /var/lib/apt/lists /var/cache/apt/archives
+    sqlite3
 
 # Set production environment
 ENV RAILS_ENV="production" \
@@ -36,8 +35,7 @@ RUN apt-get update -qq && \
     libpq-dev \
     postgresql-client \
     imagemagick \
-    libmagickwand-dev && \
-    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+    libmagickwand-dev
 
     # Copia os arquivos necessários para instalar as gems
 COPY Gemfile Gemfile.lock ./
