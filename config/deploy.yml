@@ -24,7 +24,7 @@ image: rtoledo/board_control_kamal2
 #     dockerfile: Dockerfile
 #     context: .
 #     args:
-#       RUBY_VERSION: "3.3.4"
+#       RUBY_VERSION: "3.2.1"
 
 
 #   production:
@@ -71,7 +71,7 @@ builder:
   dockerfile: Dockerfile
   context: .
   args:
-    RUBY_VERSION: "3.3.4"
+    RUBY_VERSION: "3.2.1"
 
 env:
   clear:
