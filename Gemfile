@@ -37,7 +37,7 @@ group :development do
 end
 
 group :development, :test do
-  gem "bundler-audit"
+  gem "dotenv-rails"
   gem "faker"
   gem "guard-rspec", require: false
   gem "letter_opener"
