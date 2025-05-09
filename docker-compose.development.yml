@@ -33,7 +33,7 @@ services:
       DB_PASSWORD: postgres
       BUNDLE_GEMFILE: /app/Gemfile
       PORT: 3000
-      JWT_KEY: supersecret
+      JWT_KEY: 9OWjcr9_IwPl3dQ
     command: bin/docker-dev-start-web.sh
     networks:
       - backend

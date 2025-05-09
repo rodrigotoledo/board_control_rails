@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 set -xeuo pipefail
 
+
+echo ">> Running RuboCop..."
+bundle exec rubocop || true
+
+echo ">> Running Brakeman..."
+bundle exec brakeman --no-pager --quiet || true
+
 if [[ -f ./tmp/pids/server.pid ]]; then
   rm ./tmp/pids/server.pid
 fi

@@ -1,15 +1,15 @@
 source "https://rubygems.org"
 
 # Core Rails
+gem "pg"
 gem "propshaft"
 gem "puma", ">= 5.0"
 gem "rails", "~> 8.0.2"
-gem "pg"
 gem "sqlite3", ">= 2.1"
 
 gem "importmap-rails"
-gem "turbo-rails"
 gem "stimulus-rails"
+gem "turbo-rails"
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
@@ -37,13 +37,11 @@ group :development do
 end
 
 group :development, :test do
-  gem "pry"
-  gem "active_record_query_trace"
-  gem "bullet"
   gem "bundler-audit"
   gem "faker"
   gem "guard-rspec", require: false
   gem "letter_opener"
+  gem "pry"
   gem "rails-controller-testing"
   gem "rspec_junit_formatter"
   gem "rspec-rails"
@@ -53,8 +51,8 @@ group :development, :test do
   gem "brakeman", require: false
 
   # Code quality
-  gem "rubocop-rails-omakase", require: false
   gem "factory_bot_rails"
+  gem "rubocop-rails-omakase", require: false
 end
 
 group :test do
