@@ -6,6 +6,7 @@ WORKDIR /rails
 
 # Install packages needed to build gems
 RUN apt-get update -qq && \
+    apt-get install -y --fix-broken && \
     apt-get install --no-install-recommends -y \
     curl \
     libjemalloc2 \
