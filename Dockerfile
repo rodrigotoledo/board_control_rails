@@ -37,7 +37,7 @@ RUN apt-get update -qq && \
     postgresql-client \
     imagemagick \
     libmagickwand-dev && \
-    rm -rf /var/lib/apt/lists/* /var/cache/apt/archives
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
     # Copia os arquivos necessários para instalar as gems
 COPY Gemfile Gemfile.lock ./
@@ -45,10 +45,7 @@ COPY Gemfile Gemfile.lock ./
 # Configura o bundler para modo produção
 RUN bundle config set deployment 'true' && \
     bundle config set without 'development test' && \
-    bundle install --jobs=$(nproc) --retry=3 && \
-    rm -rf /usr/local/bundle/cache/*.gem && \
-    find /usr/local/bundle/gems/ -name "*.c" -delete && \
-    find /usr/local/bundle/gems/ -name "*.o" -delete
+    bundle install --jobs=$(nproc) --retry=3
 
 # Copia o restante da aplicação
 COPY . .
