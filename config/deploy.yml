@@ -1,89 +1,89 @@
 service: rtoledo_testing_board_control
 image: rtoledo/board_control_kamal2
+# default: &default
+#   image: rtoledo/board_control_kamal2
+#   ssh:
+#     user: ubuntu
+#     keys: [ "~/.ssh/rtoledo-dev-aws.pem" ]
+#   env:
+#     clear:
+#       RAILS_ENV: <%= ENV['KAMAL_ENV'] || 'production' %>
+#       RAILS_STORAGE: s3
+#       AWS_REGION: us-east-2
+#       AWS_BUCKET: rtoledo-rails
+#   registry:
+#     server: docker.io
+#     username: foolkgs
+#     password:
+#     - KAMAL_REGISTRY_PASSWORD
+#     secret:
+#     - RAILS_MASTER_KEY
+#     - SECRET_KEY_BASE
+#   builder:
+#     arch: "amd64"
+#     dockerfile: Dockerfile
+#     context: .
+#     args:
+#       RUBY_VERSION: "3.3.4"
 
+
+#   production:
+#     <<: *default
+#     hosts:
+#     - 3.148.252.131
+#     env:
+#   clear:
+#     DATABASE_URL: "postgresql://${AWS_DB_USER}:${AWS_DB_PASSWORD}@${AWS_DB_HOST}:${AWS_DB_PORT}/${AWS_DB_PRODUCTION_NAME}"
+#     labels:
+#       traefik.http.routers.prod.rule: Host('rails_production.rtoledo.inf.br')
+#       traefik.http.routers.prod.tls: true
+#     volumes:
+#     - "storage:/app/storage"
+#   staging:
+#     <<: *default
+#     hosts:
+#     - 10.0.0.1
+#     env:
+#       clear:
+#         RAILS_ENV: staging
+#         DATABASE_URL: "postgresql://${AWS_DB_USER}:${AWS_DB_PASSWORD}@${AWS_DB_HOST}:${AWS_DB_PORT}/${AWS_DB_STAGING_NAME}"
+#     labels:
+#       traefik.http.routers.prod.rule: Host('rails_staging.rtoledo.inf.br')
+#     volumes:
+#     - "storage:/app/storage"
 servers:
   web:
   - 3.148.252.131
 
 ssh:
   user: ubuntu
-  auth_methods: [ "publickey" ]
   keys: [ "~/.ssh/rtoledo-dev-aws.pem" ]
 
 registry:
   server: docker.io
-  username: foolkgs
+  username:
+  - DOCKER_USER
   password:
-  - KAMAL_REGISTRY_PASSWORD
+  - DOCKER_PASSWORD
 
 builder:
   arch: "amd64"
   dockerfile: Dockerfile
   context: .
   args:
-    RUBY_VERSION: "3.4.2"
+    RUBY_VERSION: "3.3.4"
 
 env:
   clear:
     DATABASE_URL: "postgresql://${AWS_DB_USER}:${AWS_DB_PASSWORD}@${AWS_DB_HOST}:${AWS_DB_PORT}/${AWS_DB_NAME}"
     RAILS_STORAGE: s3
-    # AWS_REGION: us-east-2 # Remova o "c"
-    AWS_REGION: us-east-2 # Remova o "c"
+    AWS_REGION: us-east-2
     AWS_BUCKET: rtoledo-rails
+    DOCKER_TOKEN: ${DOCKER_HUB_TOKEN}
+    DOCKER_USER: ${DOCKER_USER}
+    DOCKER_PASSWORD: ${DOCKER_PASSWORD}
   secret:
   - RAILS_MASTER_KEY
 
 volumes:
 - "storage:/app/storage"
-  # Volume mais genérico
-  # Aliases are triggered with "bin/kamal <alias>". You can overwrite arguments on invocation:
-  # "bin/kamal app logs -r job" will tail logs from the first server in the job section.
-  #
-  # aliases:
-  #   shell: app exec --interactive --reuse "bash"
-
-  # Use a different ssh user than root
-  #
-  # ssh:
-  #   user: app
-
-  # Use a persistent storage volume.
-  #
-  # volumes:
-  #   - "app_storage:/app/storage"
-
-  # Bridge fingerprinted assets, like JS and CSS, between versions to avoid
-  # hitting 404 on in-flight requests. Combines all files from new and old
-  # version inside the asset_path.
-  #
-  # asset_path: /app/public/assets
-
-  # Configure rolling deploys by setting a wait time between batches of restarts.
-  #
-  # boot:
-  #   limit: 10 # Can also specify as a percentage of total hosts, such as "25%"
-  #   wait: 2
-
-  # Use accessory services (secrets come from .kamal/secrets).
-  #
-  # accessories:
-  #   db:
-  #     image: mysql:8.0
-  #     host: 192.168.0.2
-  #     port: 3306
-  #     env:
-  #       clear:
-  #         MYSQL_ROOT_HOST: '%'
-  #       secret:
-  #         - MYSQL_ROOT_PASSWORD
-  #     files:
-  #       - config/mysql/production.cnf:/etc/mysql/my.cnf
-  #       - db/production.sql:/docker-entrypoint-initdb.d/setup.sql
-  #     directories:
-  #       - data:/var/lib/mysql
-  #   redis:
-  #     image: valkey/valkey:8
-  #     host: 192.168.0.2
-  #     port: 6379
-  #     directories:
-  #       - data:/data
