@@ -20,7 +20,7 @@ RSpec.describe 'ProjectsController', type: :request do
         project = create(:project)
 
         patch api_project_path(project.id), headers: generate_jwt_token(user)
-        project.reload
+      project.reload
 
         expect(response).to have_http_status(200)
         expect(project.completed_at).not_to be_nil

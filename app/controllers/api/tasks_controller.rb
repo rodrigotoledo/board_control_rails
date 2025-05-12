@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Api
   class TasksController < ApplicationApiController
     before_action :authenticate_user!
