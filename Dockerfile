@@ -1,12 +1,19 @@
 ARG RUBY_VERSION=3.2.1
 FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
 
-# Rails app lives here
 WORKDIR /rails
 
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl libjemalloc2 libvips sqlite3 && \
-    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+    apt-get install -y --no-install-recommends \
+        ca-certificates \
+        gnupg \
+        curl && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /etc/apt/keyrings && \
+curl -fsSL http://ftp.debian.org/debian/archive/2023/key.asc | gpg --dearmor -o /etc/apt/keyrings/debian-archive.gpg && \
+echo "deb [signed-by=/etc/apt/keyrings/debian-archive.gpg] http://deb.debian.org/debian bullseye main" > /etc/apt/sources.list && \
+echo "deb [signed-by=/etc/apt/keyrings/debian-archive.gpg] http://deb.debian.org/debian bullseye-updates main" >> /etc/apt/sources.list
 
 ENV RAILS_ENV="production" \
     BUNDLE_DEPLOYMENT="1" \
@@ -17,14 +24,17 @@ ENV RAILS_ENV="production" \
 FROM base as build
 
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y \
-    libyaml-dev \
-    libpq-dev \
-    postgresql-client \
-    build-essential \
-    pkg-config \
-    git && \
-    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+    apt-get install -y -f --fix-broken && \
+    apt-get install -y --no-install-recommends \
+    libxcb1 \
+    libxrender1 \
+    libsqlite3-0 \
+    sqlite3 \
+    libsqlite3-dev \
+    libjemalloc2 \
+    libvips && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 COPY Gemfile Gemfile.lock ./
 RUN bundle install && \
