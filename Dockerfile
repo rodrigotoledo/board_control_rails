@@ -13,7 +13,7 @@ RUN apt-get update -qq && \
     libjemalloc2 \
     libvips \
     sqlite3 \
-    libsqlite3-dev \ && \
+    libsqlite3-dev && \
     rm -rf /var/lib/apt/lists/*
 
 # Set production environment

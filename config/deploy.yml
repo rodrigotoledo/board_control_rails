@@ -1,56 +1,5 @@
 service: rtoledo_testing_board_control
 image: rtoledo/board_control_kamal2
-# default: &default
-#   image: rtoledo/board_control_kamal2
-#   ssh:
-#     user: ubuntu
-#     keys: [ "~/.ssh/rtoledo-dev-aws.pem" ]
-#   env:
-#     clear:
-#       RAILS_ENV: <%= ENV['KAMAL_ENV'] || 'production' %>
-#       RAILS_STORAGE: s3
-#       AWS_REGION: us-east-2
-#       AWS_BUCKET: rtoledo-rails
-#   registry:
-#     server: docker.io
-#     username: foolkgs
-#     password:
-#     - KAMAL_REGISTRY_PASSWORD
-#     secret:
-#     - RAILS_MASTER_KEY
-#     - SECRET_KEY_BASE
-#   builder:
-#     arch: "amd64"
-#     dockerfile: Dockerfile
-#     context: .
-#     args:
-#       RUBY_VERSION: "3.2.1"
-
-
-#   production:
-#     <<: *default
-#     hosts:
-#     - 3.148.252.131
-#     env:
-#   clear:
-#     DATABASE_URL: "postgresql://${AWS_DB_USER}:${AWS_DB_PASSWORD}@${AWS_DB_HOST}:${AWS_DB_PORT}/${AWS_DB_PRODUCTION_NAME}"
-#     labels:
-#       traefik.http.routers.prod.rule: Host('rails_production.rtoledo.inf.br')
-#       traefik.http.routers.prod.tls: true
-#     volumes:
-#     - "storage:/app/storage"
-#   staging:
-#     <<: *default
-#     hosts:
-#     - 10.0.0.1
-#     env:
-#       clear:
-#         RAILS_ENV: staging
-#         DATABASE_URL: "postgresql://${AWS_DB_USER}:${AWS_DB_PASSWORD}@${AWS_DB_HOST}:${AWS_DB_PORT}/${AWS_DB_STAGING_NAME}"
-#     labels:
-#       traefik.http.routers.prod.rule: Host('rails_staging.rtoledo.inf.br')
-#     volumes:
-#     - "storage:/app/storage"
 servers:
   web:
   - 3.148.252.131
@@ -62,7 +11,7 @@ ssh:
 registry:
   server: docker.io
   username:
-  - DOCKER_USER
+  - DOCKER_USERNAME
   password:
   - DOCKER_PASSWORD
 
@@ -82,6 +31,7 @@ env:
     DOCKER_TOKEN: ${DOCKER_HUB_TOKEN}
     DOCKER_USER: ${DOCKER_USER}
     DOCKER_PASSWORD: ${DOCKER_PASSWORD}
+    JWT_KEY: ${JWT_KEY}
   secret:
   - RAILS_MASTER_KEY
 
