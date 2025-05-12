@@ -31,7 +31,7 @@ module SessionHelpers
   end
 
   def encode_token(payload)
-    JWT.encode(payload, Rails.application.credentials.dig(:jwt_key))
+    JWT.encode(payload, ENV["JWT_KEY"])
   end
 
   def sign_in(user, password = PASSWORD_FOR_USER)
