@@ -11,7 +11,6 @@ jobs:
     runs-on: ubuntu-22.04
     env:
       APPLICATION_NAME: board_control
-      JWT_KEY: so_difficult_123
       RAILS_ENV: test
 
     steps:

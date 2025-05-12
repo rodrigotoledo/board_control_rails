@@ -1,16 +1,17 @@
 default: &default
   store_options:
-    max_age: <%= 60.days.to_i %>
+    # Cap age of oldest cache entry to fulfill retention policies
+    # max_age: <%= 60.days.to_i %>
+    max_size: <%= 256.megabytes %>
     namespace: <%= Rails.env %>
-  size_estimate_samples: 1000
 
 development:
   <<: *default
   database: cache
 
-production:
+test:
   <<: *default
+
+production:
   database: cache
-  store_options:
-    namespace: "production_cache"
-    max_entries: 100000
+  <<: *default

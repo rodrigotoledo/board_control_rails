@@ -1,4 +1,15 @@
 version: "3.8"
+
+x-common-env: &common-env
+  DB_HOST: db_postgresql
+  DB_PORT: 5432
+  APPLICATION_NAME: board_control
+  BUNDLE_GEMFILE: /app/Gemfile
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
+  PORT: 3000
+  RAILS_ENV: development
+
 networks:
   backend:
   frontend:
@@ -9,9 +20,7 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_HOST_AUTH_METHOD: trust
+      <<: *common-env
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
@@ -26,14 +35,7 @@ services:
       - bundle:/usr/local/bundle
     working_dir: /app
     environment:
-      APPLICATION_NAME: board_control
-      DB_HOST: db_postgresql
-      DB_PORT: 5432
-      DB_USERNAME: postgres
-      DB_PASSWORD: postgres
-      BUNDLE_GEMFILE: /app/Gemfile
-      PORT: 3000
-      JWT_KEY: 9OWjcr9_IwPl3dQ9OWjcr9_IwPl3dQ
+      <<: *common-env
     command: bin/docker-dev-start-web.sh
     networks:
       - backend

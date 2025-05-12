@@ -19,8 +19,12 @@ development:
     database: <%= "#{ENV.fetch('APPLICATION_NAME', 'app')}_development" %>
   cache:
     <<: *sqlite
-    database: storage/production_cache.sqlite3
+    database: storage/development_cache.sqlite3
     migrations_paths: db/cache_migrate
+  queue:
+    <<: *sqlite
+    database: storage/development_queue.sqlite3
+    migrations_paths: db/queue_migrate
   cable:
     <<: *sqlite
     database: storage/development_cable.sqlite3
@@ -41,6 +45,10 @@ production:
     <<: *sqlite
     database: production_cache.sqlite3
     migrations_paths: db/cache_migrate
+  queue:
+    <<: *default
+    database: storage/production_queue.sqlite3
+    migrations_paths: db/queue_migrate
   cable:
     <<: *sqlite
     database: storage/production_cable.sqlite3

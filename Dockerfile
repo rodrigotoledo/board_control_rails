@@ -4,14 +4,17 @@ FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
 # Rails app lives here
 WORKDIR /rails
 
-# Install packages needed to build gems
 RUN apt-get update -qq && \
-    apt-get install -y --fix-broken && \
+    apt-get install -y --no-install-recommends ca-certificates gnupg && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 0E98404D386FA1D9 6ED0E7B82643E131 && \
+    apt-get update -qq && \
     apt-get install --no-install-recommends -y \
     curl \
     libjemalloc2 \
     libvips \
-    sqlite3
+    sqlite3 \
+    libsqlite3-dev \ && \
+    rm -rf /var/lib/apt/lists/*
 
 # Set production environment
 ENV RAILS_ENV="production" \
@@ -29,14 +32,15 @@ RUN apt-get update -qq && \
     libgmp-dev \
     libreadline-dev \
     libjemalloc2 \
-    sqlite3 \
     watchman \
-    libsqlite3-dev \
     sudo \
     libpq-dev \
     postgresql-client \
     imagemagick \
     libmagickwand-dev
+    build-essential \
+    pkg-config \
+    git
 
     # Copia os arquivos necessários para instalar as gems
 COPY Gemfile Gemfile.lock ./
@@ -49,9 +53,9 @@ RUN bundle config set deployment 'true' && \
 # Copia o restante da aplicação
 COPY . .
 
-# Precompila os bootsnap e os assets
-RUN bundle exec bootsnap precompile --gemfile && \
-    SECRET_KEY_BASE=dummy RAILS_ENV=production bundle exec rails assets:precompile
+RUN bundle exec bootsnap precompile app/ lib/
+
+RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
 # Final stage for app image
 FROM base
