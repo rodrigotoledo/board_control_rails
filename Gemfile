@@ -69,5 +69,5 @@ gem "kaminari", "~> 1.2"
 
 gem "ransack", "~> 4.3"
 
-gem "tailwindcss-rails", "~> 3.3"
-gem "tailwindcss-ruby", "~> 3.4"
+gem "tailwindcss-rails", "~> 4.2"
+gem "tailwindcss-ruby", "~> 4.1"
