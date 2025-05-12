@@ -1,4 +1,5 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
+require 'database_cleaner/active_record'
 require 'spec_helper'
 require "simplecov"
 SimpleCov.start "rails" do
@@ -67,4 +68,8 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
 end
