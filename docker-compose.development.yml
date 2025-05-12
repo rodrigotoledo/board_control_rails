@@ -9,6 +9,7 @@ x-common-env: &common-env
   POSTGRES_PASSWORD: postgres
   PORT: 3000
   RAILS_ENV: development
+  JWT_KEY: supersecret
 
 networks:
   backend:

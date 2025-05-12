@@ -4,7 +4,7 @@ module AuthenticationConcern
   extend ActiveSupport::Concern
 
   def encode_token(payload)
-    JWT.encode(payload, Rails.application.credentials.dig(:jwt_key))
+    JWT.encode(payload, ENV["JWT_KEY"])
   end
 
   def decode_token
@@ -12,7 +12,7 @@ module AuthenticationConcern
     if auth_header
       begin
         token = auth_header.split(" ").last
-        JWT.decode(token, Rails.application.credentials.dig(:jwt_key), true, algorithm: "HS256")
+        JWT.decode(token, ENV["JWT_KEY"], true, algorithm: "HS256")
       rescue
         head :unauthorized
       end

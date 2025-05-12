@@ -36,8 +36,6 @@ RUN apt-get update -qq && \
     sudo \
     libpq-dev \
     postgresql-client \
-    imagemagick \
-    libmagickwand-dev
     build-essential \
     pkg-config \
     git
