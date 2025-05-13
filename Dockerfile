@@ -1,16 +1,19 @@
-ARG RUBY_VERSION=3.2.1
-FROM docker.io/library/ruby:3.2-bookworm AS base
+ARG RUBY_VERSION=3.2
+
+FROM registry.docker.com/library/ruby:$RUBY_VERSION-bookworm as base
+
 
 WORKDIR /rails
 
 RUN apt-get update -qq && \
     apt-get install -y --no-install-recommends \
-        ca-certificates \
-        gnupg \
-        curl && \
-        curl -fsSL https://ftp.debian.org/debian/archive-key.asc | gpg --dearmor -o /etc/apt/keyrings/debian-archive.gpg && \
-        echo "deb [signed-by=/etc/apt/keyrings/debian-archive.gpg] http://deb.debian.org/debian bookworm main contrib non-free" > /etc/apt/sources.list && \
-        echo "deb [signed-by=/etc/apt/keyrings/debian-archive.gpg] http://deb.debian.org/debian bookworm-updates main contrib non-free" >> /etc/apt/sources.list
+        curl \
+        libjemalloc2 \
+        libvips \
+        sqlite3 \
+        libpq-dev \
+        && \
+    rm -rf /var/lib/apt/lists/*
 
 ENV RAILS_ENV="production" \
     BUNDLE_DEPLOYMENT="1" \
@@ -24,14 +27,7 @@ RUN apt-get update -qq && \
     apt-get install -y -f --fix-broken && \
     apt-get install -y --no-install-recommends \
     build-essential \
-    libpq-dev && \
-    libxcb1 \
-    libxrender1 \
-    libsqlite3-0 \
-    sqlite3 \
-    libsqlite3-dev \
-    libjemalloc2 \
-    libvips && \
+    libyaml-dev && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 

@@ -1,5 +1,5 @@
-service: rtoledo_testing_board_control
-image: rtoledo/board_control_kamal2
+service: foolkgs_testing_board_control
+image: foolkgs/board_control_kamal2
 servers:
   web:
   - 3.148.252.131
@@ -20,7 +20,7 @@ builder:
   dockerfile: Dockerfile
   context: .
   args:
-    RUBY_VERSION: "3.2.1"
+    RUBY_VERSION: "3.2"
 
 env:
   clear:
