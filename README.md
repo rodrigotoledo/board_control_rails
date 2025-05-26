@@ -76,9 +76,10 @@ So Build You Just Need To Run The First Time:
 docker compose -f docker-compose.development.yml build
 ```
 
-And To Climb The Application Rode:
+And To Climb The Application run:
 
 ```bash
+FORCE_DB_CREATE=true FORCE_DB_SEED=true docker compose -f docker-compose.development.yml up
 docker compose -f docker-compose.development.yml up
 docker compose -f docker-compose.development.yml down
 docker compose -f docker-compose.development.yml run app bash
@@ -91,6 +92,12 @@ To Run Migrations, Tests ... Etc, Run The App With Whatever Is Needed:
 
 ```bash
 docker compose -f docker-compose.development.yml run app rails db:drop db:create db:migrate
+```
+
+Or seeds:
+
+```bash
+docker compose -f docker-compose.development.yml run app rails db:seed
 ```
 
 ## Rails Commands
