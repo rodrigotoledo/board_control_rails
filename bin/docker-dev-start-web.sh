@@ -14,7 +14,10 @@ fi
 
 bundle
 
-if ! [[ -f .db-created ]]; then
+sudo chown -R appuser:appuser /app/db
+sudo chmod -R 775 /app/db
+
+if [[ "${FORCE_DB_CREATE}" == "true" ]]; then
   bin/rails db:drop
   bin/rails db:drop:cache
   bin/rails db:drop:cable
@@ -28,9 +31,9 @@ fi
 
 bin/rails db:migrate
 
-if ! [[ -f .db-seeded ]]; then
+if [[ "${FORCE_DB_SEED}" == "true" ]]; then
   bin/rails db:seed
-  touch .db-seeded
+  touch /app/db/.db-seeded
 fi
 
 
