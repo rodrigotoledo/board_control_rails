@@ -6,7 +6,7 @@ ARG USER_ID=1000
 ARG GROUP_ID=1000
 
 RUN apt-get update && apt-get install -y \
-  curl
+  curl \
   libjemalloc2 \
   libvips \
   sqlite3 \
@@ -26,6 +26,12 @@ RUN echo "appuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 USER appuser
 
 WORKDIR /app
+
+RUN sudo mkdir -p /app/tmp /app/log /app/db && \
+    sudo chown -R appuser:appuser /app && \
+    sudo chmod -R 775 /app/tmp /app/log /app/db && \
+    sudo chmod g+s /app/db /app/tmp /app/log
+
 COPY --chown=appuser:appuser Gemfile* ./
 RUN gem install bundler
 RUN bundle lock --add-platform x86_64-linux
