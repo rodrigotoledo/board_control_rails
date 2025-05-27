@@ -21,12 +21,10 @@ RUN apt-get update && apt-get install -y \
 
 RUN groupadd -g ${GROUP_ID} appuser && useradd -u ${USER_ID} -g ${GROUP_ID} -m appuser
 
-RUN echo "appuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
-
-RUN sudo mkdir -p /app/tmp /app/log /app/db && \
-    sudo chown -R appuser:appuser /app && \
-    sudo chmod -R 775 /app/tmp /app/log /app/db && \
-    sudo chmod g+s /app/db /app/tmp /app/log
+RUN mkdir -p /app/tmp /app/log /app/db && \
+  chown -R appuser:appuser /app && \
+  chmod -R 775 /app/tmp /app/log /app/db && \
+  chmod g+s /app/db /app/tmp /app/log
 
 USER appuser
 
