@@ -23,20 +23,22 @@ RUN groupadd -g ${GROUP_ID} appuser && useradd -u ${USER_ID} -g ${GROUP_ID} -m a
 
 RUN echo "appuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
-USER appuser
-
-WORKDIR /app
-
 RUN sudo mkdir -p /app/tmp /app/log /app/db && \
     sudo chown -R appuser:appuser /app && \
     sudo chmod -R 775 /app/tmp /app/log /app/db && \
     sudo chmod g+s /app/db /app/tmp /app/log
 
+USER appuser
+
+WORKDIR /app
+
 COPY --chown=appuser:appuser Gemfile* ./
 RUN gem install bundler
+RUN sudo chmod 766 Gemfile.lock
 RUN bundle lock --add-platform x86_64-linux
 RUN bundle install
 RUN gem install foreman
 COPY --chown=appuser:appuser . /app
 RUN sudo rm -rf tmp/*
 ADD . /app
+RUN echo 'export PS1="\[\e[32m\]\u@\h\[\e[m\]:\[\e[34m\]\w\[\e[m\] \[\e[33m\](\$GIT_BRANCH)\[\e[m\]\$ "' >> /home/appuser/.bashrc
