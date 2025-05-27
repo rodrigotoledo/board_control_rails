@@ -81,7 +81,7 @@ And To Climb The Application run:
 ```bash
 FORCE_DB_CREATE=true FORCE_DB_SEED=true docker compose -f docker-compose.development.yml up
 docker compose -f docker-compose.development.yml up
-docker compose -f docker-compose.development.yml down
+docker compose -f docker-compose.development.yml down -v
 docker compose -f docker-compose.development.yml run app bash
 docker compose -f docker-compose.development.yml run app rails active_storage:install
 ```
