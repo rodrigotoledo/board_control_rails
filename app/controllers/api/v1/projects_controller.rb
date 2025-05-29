@@ -7,7 +7,7 @@ module Api
 
       def index
         order_direction = params[:sort_direction] || :asc
-        order_field = params[:sort_by] || :name
+        order_field = params[:sort_by] || :id
 
         safe_params = params.fetch(:q, {}).permit(
           :name_cont,
