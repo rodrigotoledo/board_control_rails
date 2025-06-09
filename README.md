@@ -79,6 +79,8 @@ docker compose -f docker-compose.development.yml build
 And To Climb The Application run:
 
 ```bash
+FORCE_DB_CREATE=true FORCE_DB_SEED=true docker compose -f docker-compose.development.yml down
+FORCE_DB_CREATE=true FORCE_DB_SEED=true docker compose -f docker-compose.development.yml up --build
 FORCE_DB_CREATE=true FORCE_DB_SEED=true docker compose -f docker-compose.development.yml up
 docker compose -f docker-compose.development.yml up
 docker compose -f docker-compose.development.yml down
