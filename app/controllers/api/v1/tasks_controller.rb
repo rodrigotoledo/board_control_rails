@@ -6,8 +6,8 @@ module Api
       before_action :authenticate_user!
 
       def index
-        order_direction = params[:sort_direction] || :asc
-        order_field = params[:sort_by] || :scheduled_at
+        order_direction = params[:sort_direction] || :desc
+        order_field = params[:sort_by] || :id
 
         safe_params = params.fetch(:q, {}).permit(
           :title_cont,

@@ -7,12 +7,12 @@ module Api
 
       def index
         order_direction = params[:sort_direction] || :asc
-        order_field = params[:sort_by] || :name
+        order_field = params[:sort_by] || :id
 
         safe_params = params.fetch(:q, {}).permit(
           :name_cont,
-          :scheduled_at_gteq,
-          :scheduled_at_lteq
+          :created_at_gteq,
+          :created_at_lteq
         )
 
         q = Project.ransack(safe_params)

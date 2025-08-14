@@ -76,14 +76,14 @@ So Build You Just Need To Run The First Time:
 docker compose -f docker-compose.development.yml build
 ```
 
-And To Climb The Application run:
+And To Climb The Application Rode:
 
 ```bash
 FORCE_DB_CREATE=true FORCE_DB_SEED=true docker compose -f docker-compose.development.yml down
 FORCE_DB_CREATE=true FORCE_DB_SEED=true docker compose -f docker-compose.development.yml up --build
-FORCE_DB_CREATE=true FORCE_DB_SEED=true docker compose -f docker-compose.development.yml up
 docker compose -f docker-compose.development.yml up
-docker compose -f docker-compose.development.yml down
+docker compose -f docker-compose.development.yml down -v
+docker compose -f docker-compose.development.yml run app bundle install
 docker compose -f docker-compose.development.yml run app bash
 docker compose -f docker-compose.development.yml run app rails active_storage:install
 ```
@@ -94,12 +94,6 @@ To Run Migrations, Tests ... Etc, Run The App With Whatever Is Needed:
 
 ```bash
 docker compose -f docker-compose.development.yml run app rails db:drop db:create db:migrate
-```
-
-Or seeds:
-
-```bash
-docker compose -f docker-compose.development.yml run app rails db:seed
 ```
 
 ## Rails Commands
@@ -117,7 +111,7 @@ docker compose -f docker-compose.development.yml run app rails g scaffold commen
 For Tests For Example Run `Guard`:
 
 ```bash
-docker compose -f docker-compose.development.yml run app bundle exec guard
+docker compose -f docker-compose.development.yml run -e RAILS_ENV=test app bundle exec guard
 ```
 
 For Migrations (Remembering That You May Need To Run Both In Development And Test):
@@ -131,7 +125,7 @@ docker compose -f docker-compose.development.yml run app rails db:migrate
 If You Want To Stop The Services:
 
 ```bash
-docker compose -f docker-compose.development.yml down
+docker compose -f docker-compose.development.yml down -v
 ```
 
 ## Putting In Development Mode Without Docker

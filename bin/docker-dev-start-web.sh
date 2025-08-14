@@ -3,7 +3,7 @@ set -xeuo pipefail
 
 
 echo ">> Running RuboCop..."
-bundle exec rubocop || true
+bundle exec rubocop -A || true
 
 echo ">> Running Brakeman..."
 bundle exec brakeman --no-pager --quiet || true
@@ -14,8 +14,8 @@ fi
 
 bundle
 
-sudo chown -R appuser:appuser /app/db
-sudo chmod -R 775 /app/db
+chown -R appuser:appuser /app/db
+chmod -R 775 /app/db
 
 if [[ "${FORCE_DB_CREATE}" == "true" ]]; then
   bin/rails db:drop
@@ -36,5 +36,4 @@ if [[ "${FORCE_DB_SEED}" == "true" ]]; then
   touch /app/db/.db-seeded
 fi
 
-
-foreman start -f Procfile.dev
+exec "./bin/dev"
