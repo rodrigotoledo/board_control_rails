@@ -11,8 +11,8 @@ module Api
 
         safe_params = params.fetch(:q, {}).permit(
           :name_cont,
-          :scheduled_at_gteq,
-          :scheduled_at_lteq
+          :created_at_gteq,
+          :created_at_lteq
         )
 
         q = Project.ransack(safe_params)

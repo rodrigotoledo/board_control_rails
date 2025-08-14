@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # :nocov:
 class ApplicationJob < ActiveJob::Base
   # Automatically retry jobs that encountered a deadlock

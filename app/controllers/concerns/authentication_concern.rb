@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # app/controllers/concerns/authentication_concern.rb
 
 module AuthenticationConcern
