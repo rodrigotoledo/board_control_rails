@@ -1,4 +1,6 @@
-69.times do
+# frozen_string_literal: true
+
+30.times do
   30.times do |i|
     Task.create!(
       title: Faker::Lorem.question,
