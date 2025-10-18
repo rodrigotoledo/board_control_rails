@@ -19,23 +19,26 @@ class ProjectsController < ApplicationController
 
   # GET /projects/1/edit
   def edit
+    respond_to do |format|
+      format.turbo_stream
+    end
   end
 
   # POST /projects
   def create
     @project = Project.new(project_params)
-
-    if @project.save
-      redirect_to @project, notice: "Project was successfully created."
-    else
-      render :new, status: :unprocessable_entity
+    @project.save
+    respond_to do |format|
+      format.turbo_stream
     end
   end
 
   # PATCH/PUT /projects/1
   def update
     if @project.update(project_params)
-      redirect_to @project, notice: "Project was successfully updated.", status: :see_other
+      respond_to do |format|
+        format.turbo_stream
+      end
     else
       render :edit, status: :unprocessable_entity
     end

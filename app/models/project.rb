@@ -12,7 +12,7 @@ class Project < ApplicationRecord
     broadcast_update_to "total_of_projects", target: "total_of_projects", partial: "projects/total_of_projects"
   end
   after_update_commit do
-    broadcast_update_to "projects", target: "project_#{id}", partial: "projects/project", locals: { project: self }
+    broadcast_replace_to "projects", target: "project_#{id}", partial: "projects/project", locals: { project: self }
     broadcast_update_to "total_of_projects", target: "total_of_projects", partial: "projects/total_of_projects"
   end
   after_destroy_commit do

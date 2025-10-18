@@ -1,0 +1,5 @@
+<% if @project.valid? %>
+<%= turbo_stream.update "project_form", partial: 'projects/form', locals: {project: Project.new} %>
+<% else %>
+<%= turbo_stream.update "project_form", partial: 'projects/form', locals: {project: @project} %>
+<% end %>
