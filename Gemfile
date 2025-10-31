@@ -65,7 +65,7 @@ end
 
 gem "email_validator"
 gem "jwt"
-gem "rack-cors", "~> 2.0"
+gem "rack-cors", "~> 3.0"
 
 gem "kaminari", "~> 1.2"
 
